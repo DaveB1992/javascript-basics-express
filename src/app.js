@@ -1,5 +1,11 @@
 const express = require('express');
-const { sayHello, uppercase, lowercase } = require('./lib/strings');
+const {
+  sayHello,
+  uppercase,
+  lowercase,
+  firstCharacter,
+  firstCharacters,
+} = require('./lib/strings');
 const { add, subtract, multiply, divide, remainder } = require('./lib/numbers');
 const { negate, truthiness, isOdd, startsWith } = require('./lib/booleans');
 const {
@@ -7,7 +13,6 @@ const {
   arrayToCSVString,
   addToArray2,
   elementsStartingWithAVowel,
-  removeNthElement2,
 } = require('./lib/arrays');
 
 const app = express();
@@ -28,16 +33,12 @@ app.get('/strings/lower/:string', (req, res) => {
 });
 
 app.get('/strings/first-characters/:string', (req, res) => {
-  const { string } = req.query;
-  const firstChar = string ? string.charAt(0) : 'h';
-  res.status(200).json({ result: firstChar });
-});
-
-app.get('/strings/first-characters/:string', (req, res) => {
-  const { string } = req.params;
   const { length } = req.query;
-  const firstChars = string.slice(0, length);
-  res.json({ result: firstChars });
+  if (length) {
+    res.status(200).json({ result: firstCharacters(req.params.string, length) });
+  } else {
+    res.status(200).json({ result: firstCharacter(req.params.string) });
+  }
 });
 
 // numbers
